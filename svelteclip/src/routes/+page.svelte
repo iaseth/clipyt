@@ -23,7 +23,6 @@
 		try {
 			const response = await fetch(`${API_BASE_URL}/entries?start=${start}&end=${end}`);
 			const data: Entry[] = await response.json();
-			console.log(data);
 			entries.set(data);
 			weeklyEntries = data;
 		} catch (error) {
@@ -56,39 +55,30 @@
 	$: fetchEntries();
 </script>
 
-<style>
-	td { padding: 12px 16px; }
-</style>
-
 <section class="bg-slate-50">
-	<header class="bg-blue-500 text-white py-6 text-center">
+	<header class="bg-blue-500 text-white py-6 text-center hidden">
 		<h2>Entries for the Week</h2>
 	</header>
 
-	<table>
-		<tbody>
-			{#each weeklyEntries as entry, index (entry.id)}
-				<tr class="border-b border-slate-400">
-					<td>{index+1}</td>
-					<td class="font-mono">
-						{new Date(entry.timestamp*1000).toLocaleDateString("en-UK")}
-					</td>
-					<td class="font-mono">
-						{new Date(entry.timestamp*1000).toLocaleTimeString("en-UK")}
-					</td>
-
-					<td>
-						<pre class="p-3 text-wrap bg-zinc-900 text-white rounded-md">{entry.content}</pre>
-					</td>
-
-					<td>
+	<section class="bg-zinc-800 space-y-6 px-4 py-16">
+		{#each weeklyEntries as entry, index (entry.id)}
+			<section class="max-w-3xl mx-auto bg-zinc-950 text-white rounded-md overflow-hidden">
+				<header class="flex items-center bg-zinc-900">
+					<div class="grow font-mono px-4 pt-1 text-zinc-500">
+						<b class="text-yellow-500">#{index+1}</b>
+						on <b class="text-red-500">{new Date(entry.timestamp*1000).toLocaleDateString("en-UK")}</b>
+						at <b class="text-green-500">{new Date(entry.timestamp*1000).toLocaleTimeString("en-UK")}</b>
+					</div>
+					<div>
 						<button on:click={() => copyToClipboard(entry.content)}>Copy</button>
-					</td>
-					<td>
 						<button on:click={() => deleteEntry(entry.id)}>Delete</button>
-					</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
+					</div>
+				</header>
+
+				<section>
+					<pre class="p-3 text-wrap">{entry.content}</pre>
+				</section>
+			</section>
+		{/each}
+	</section>
 </section>
