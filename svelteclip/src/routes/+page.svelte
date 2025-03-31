@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import dayjs from 'dayjs';
+    import ClipboardEntry from '$lib/components/ClipboardEntry.svelte';
 
 	interface Entry {
 		id: string;
@@ -52,7 +53,7 @@
 
 	onMount(fetchEntries);
 
-	$: fetchEntries();
+	// $: fetchEntries();
 </script>
 
 <section class="bg-slate-50">
@@ -62,23 +63,7 @@
 
 	<section class="bg-zinc-800 space-y-6 px-4 py-16">
 		{#each weeklyEntries as entry, index (entry.id)}
-			<section class="max-w-3xl mx-auto bg-zinc-950 text-white rounded-md overflow-hidden">
-				<header class="flex items-center bg-zinc-900">
-					<div class="grow font-mono px-4 pt-1 text-zinc-500">
-						<b class="text-yellow-500">#{index+1}</b>
-						on <b class="text-red-500">{new Date(entry.timestamp*1000).toLocaleDateString("en-UK")}</b>
-						at <b class="text-green-500">{new Date(entry.timestamp*1000).toLocaleTimeString("en-UK")}</b>
-					</div>
-					<div>
-						<button on:click={() => copyToClipboard(entry.content)}>Copy</button>
-						<button on:click={() => deleteEntry(entry.id)}>Delete</button>
-					</div>
-				</header>
-
-				<section>
-					<pre class="p-3 text-wrap">{entry.content}</pre>
-				</section>
-			</section>
+			<ClipboardEntry {...{entry, index, copyToClipboard, deleteEntry}} />
 		{/each}
 	</section>
 </section>
