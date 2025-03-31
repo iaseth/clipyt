@@ -8,7 +8,7 @@ Clipyt is a Python-based clipboard monitoring tool that records clipboard change
 - **Database Storage**: Stores clipboard contents in a SQLite database using a Peewee model with UUIDs as primary keys.
 - **Command Interface**: Supports commands to start recording (`RECORD`) and to list the latest 10 entries (`LIST`).
 - **Web Interface**: Provides a Flask-based API with routes to retrieve clipboard entries between two dates and to delete specific entries.
-- **Cross-Platform Support**: Stores the SQLite database in a `.clipster` directory inside the user's home directory, ensuring compatibility across different operating systems.
+- **Cross-Platform Support**: Stores the SQLite database in a `.clipyt` directory inside the user's home directory, ensuring compatibility across different operating systems.
 - **Modern UI**: Includes a Svelte-based web application that allows users to view and manage clipboard entries by day or week, with options to copy or delete individual entries.
 
 ## Installation
@@ -75,11 +75,11 @@ Clipyt is a Python-based clipboard monitoring tool that records clipboard change
 - **Retrieve Entries Between Two Dates**:
   
 ```
-  GET /entries?start=YYYY-MM-DD&end=YYYY-MM-DD
+  GET /entries?start=TIMESTAMP_1&end=TIMESTAMP_2
   ```
 
 
-  Returns clipboard entries between the specified dates. The maximum span allowed is 7 days.
+  Returns clipboard entries between the specified timestamps. The maximum span allowed is 7 days.
 
 - **Delete a Specific Entry**:
   
@@ -92,7 +92,7 @@ Clipyt is a Python-based clipboard monitoring tool that records clipboard change
 
 ## Database Storage
 
-The SQLite database is stored in a `.clipster` directory within the user's home directory, ensuring that the application works seamlessly across different platforms.
+The SQLite database is stored in a `.clipyt` directory within the user's home directory, ensuring that the application works seamlessly across different platforms.
 
 ## Contributing
 
