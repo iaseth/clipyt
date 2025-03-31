@@ -32,14 +32,15 @@ def record_clipboard():
 		current_clipboard = pyperclip.paste()
 		if current_clipboard and current_clipboard != last_clipboard:
 			ClipboardEntry.create(id=uuid.uuid4(), timestamp=int(time.time()), content=current_clipboard)
-			print(f"Recorded: {current_clipboard}")
+			print(f"Recorded: {len(current_clipboard)} chars")
 			last_clipboard = current_clipboard
 		time.sleep(1)
 
 def list_entries():
 	entries = ClipboardEntry.select().order_by(ClipboardEntry.timestamp.desc()).limit(10)
 	for i, entry in enumerate(entries, start=1):
-		print(f"{i}. {datetime.fromtimestamp(entry.timestamp)} - {entry.content}")
+		date = datetime.fromtimestamp(entry.timestamp)
+		print(f"{i:4}. on {date.date()} at {date.time()} - {entry.content}")
 
 def main():
 	parser = argparse.ArgumentParser()
