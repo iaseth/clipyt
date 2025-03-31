@@ -1,12 +1,16 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 
 from clipyt import ClipboardEntry
 
 
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/entries", methods=["GET"])
+@cross_origin()
 def get_entries():
 	try:
 		start_date = int(request.args.get("start", 0))
@@ -24,6 +28,7 @@ def get_entries():
 		return jsonify({"error": str(e)}), 500
 
 @app.route("/delete/<uuid:entry_id>", methods=["DELETE"])
+@cross_origin()
 def delete_entry(entry_id):
 	try:
 		query = ClipboardEntry.get_or_none(ClipboardEntry.id == entry_id)
