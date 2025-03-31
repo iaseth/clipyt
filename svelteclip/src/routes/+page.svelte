@@ -56,12 +56,16 @@
 	// $: fetchEntries();
 </script>
 
-<section class="bg-slate-50">
+<svelte:head>
+	<title>Clipyt</title>
+</svelte:head>
+
+<section class="">
 	<header class="bg-blue-500 text-white py-6 text-center hidden">
 		<h2>Entries for the Week</h2>
 	</header>
 
-	<section class="bg-zinc-800 space-y-6 px-4 py-16">
+	<section class="px-4 py-16 space-y-8">
 		{#each weeklyEntries as entry, index (entry.id)}
 			<ClipboardEntry {...{entry, index, copyToClipboard, deleteEntry}} />
 		{/each}
