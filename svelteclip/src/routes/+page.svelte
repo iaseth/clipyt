@@ -35,7 +35,7 @@
 		try {
 			const response = await fetch(`${API_BASE_URL}/delete/${id}`, { method: 'DELETE' });
 			if (response.ok) {
-				entries.update(e => e.filter(entry => entry.id !== id));
+				setTimeout(fetchEntries, 1000);
 			}
 		} catch (error) {
 			console.error('Failed to delete entry', error);
@@ -45,6 +45,7 @@
 	function copyToClipboard(content: string) {
 		navigator.clipboard.writeText(content).then(() => {
 			console.log('Copied to clipboard:', content);
+			setTimeout(fetchEntries, 1000);
 		}).catch(err => {
 			console.error('Failed to copy', err);
 		});
@@ -56,25 +57,30 @@
 </script>
 
 <style>
-	td { padding: 12px 6px; }
+	td { padding: 12px 16px; }
 </style>
 
-<section class="bg-blue-500">
-	<header class="py-6 text-center">
+<section class="bg-slate-50">
+	<header class="bg-blue-500 text-white py-6 text-center">
 		<h2>Entries for the Week</h2>
 	</header>
 
 	<table>
 		<tbody>
-			{#each weeklyEntries as entry, index}
-				<tr class="odd:bg-slate-200">
+			{#each weeklyEntries as entry, index (entry.id)}
+				<tr class="border-b border-slate-400">
 					<td>{index+1}</td>
-					<td>
-						{entry.timestamp}
+					<td class="font-mono">
+						{new Date(entry.timestamp*1000).toLocaleDateString("en-UK")}
 					</td>
-					<td>
-						<pre class="text-wrap">{entry.content}</pre>
+					<td class="font-mono">
+						{new Date(entry.timestamp*1000).toLocaleTimeString("en-UK")}
 					</td>
+
+					<td>
+						<pre class="p-3 text-wrap bg-zinc-900 text-white rounded-md">{entry.content}</pre>
+					</td>
+
 					<td>
 						<button on:click={() => copyToClipboard(entry.content)}>Copy</button>
 					</td>
